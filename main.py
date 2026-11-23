@@ -49,6 +49,11 @@ def main() -> int:
     out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
     os.makedirs(out_dir, exist_ok=True)
     text = TEXT
+    # The brief promises exactly this text with no trailing newline:
+    # fail loudly rather than write a wrong entry.
+    if text != text.strip():
+        print("text has leading or trailing whitespace", file=sys.stderr)
+        return 1
     if not (1 <= len(text) <= 280):
         print(f"text is {len(text)} characters, must be 1-280", file=sys.stderr)
         return 1
